@@ -3,3 +3,4 @@ a.out
 raytracer
 *.ppm
 .DS_Store
+*.swp
