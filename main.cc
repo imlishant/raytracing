@@ -12,7 +12,7 @@ color ray_color(const ray& r) {
     // (1 - a)*start + a*end
     vec3 unit_direction = unit_vector(r.direction());
     auto a = 0.5 * (unit_direction.y() + 1.0);
-    return (1.0 - a) * color(0, 0, 0) + a * color(0, 0, 1.0);
+    return (1.0 - a) * color(0.0, 0.0, 0.0) + a * color(0.3, 0.6, 1.0);
 }
 
 int main() {
@@ -52,7 +52,7 @@ int main() {
 
     // render
 
-    std::cout << "P3\n" << image_height << ' ' << image_width << "\n255\n";
+    std::cout << "P3\n" << image_width<< ' ' << image_height << "\n255\n";
 
     // this is the canvas/screen, so the coords are like 
     // that with top-left corner is (0,0,0), as is (i,j,0);
