@@ -3,17 +3,15 @@
 #include "vec3.h"
 #include <iostream>
 
+
+color ray_color(const ray& r) {
+    vec3 unit_direction = unit_vector(r.direction());
+    auto a = 0.5 * (unit_direction.y() + 1.0);
+    return (1.0 - a) * color(0, 0, 0) + a * color(0, 0, 1.0);
+}
+
 int main() {
-
-    color ray_color(const ray& r) {
-        return color(0, 0, 0);
-    }
-
     // image
-
-    // int image_height = 256;
-    // int image_width = 256;
-
     auto aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
 
