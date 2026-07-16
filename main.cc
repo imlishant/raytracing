@@ -5,6 +5,11 @@
 
 
 color ray_color(const ray& r) {
+    // -1.0 <= |unit_direction| <= 1.0
+    // -1.0 < unit_direction.y() < 1.0
+    // scaling it to [0, 1]
+    // blending rule
+    // (1 - a)*start + a*end
     vec3 unit_direction = unit_vector(r.direction());
     auto a = 0.5 * (unit_direction.y() + 1.0);
     return (1.0 - a) * color(0, 0, 0) + a * color(0, 0, 1.0);
@@ -12,8 +17,11 @@ color ray_color(const ray& r) {
 
 int main() {
     // image
+
     auto aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
+
+    // calc image_height and atleast 1
 
     int image_height = int(image_width / aspect_ratio);
     image_height = image_height < 1 ? 1 : image_height;
@@ -21,7 +29,11 @@ int main() {
     // camera/eye
     // viewport
     // real 3d, 4th quad
-    auto focal_length = 1.0; // z-axis
+    // x-axis = right
+    // y-axis = up and inverted here to match with screen coords
+    // z-axis = towards me is positive, so viewport center is at (0, 0, -focal_length);
+
+    auto focal_length = 1.0; 
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * (double(image_width) / image_height);
     auto camera_center = point3(0, 0, 0);
