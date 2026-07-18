@@ -3,6 +3,14 @@
 #include "vec3.h"
 #include <iostream>
 
+bool hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = center - r.origin();
+    double a = dot(r.direction(), r.direction());
+    double b = -2.0 * dot(r.direction(), oc);
+    double c = dot(oc, oc) - radius * radius;
+    double D = b*b - 4*a*c;
+    return (D >= 0);
+}
 
 color ray_color(const ray& r) {
     // -1.0 <= |unit_direction| <= 1.0
@@ -10,7 +18,22 @@ color ray_color(const ray& r) {
     // scaling it to [0, 1]
     // blending rule
     // (1 - a)*start + a*end
+
+    // the center is on the viewport,so put it there
+    // thats why the z-axis shift
+    // sphere is just 1m away from the camera
+    // so beware if the radius is larger than 1m or tends to 1m
+    // the camera would be very close to object and about to be swallowed.
+    // so does the size of the viewport also affects the viewing exp.
+    point3 center = point3(0.0, 0.0, 1.0);
+    double radius = 0.7;
+    // double radius = 0.77;
+    if (hit_sphere(center, radius, r)) {
+            return color(0.5, 0.0, 0.0);
+    }
+
     vec3 unit_direction = unit_vector(r.direction());
+    // vec3 unit_direction = (r.direction());
     auto a = 0.5 * (unit_direction.y() + 1.0);
     return (1.0 - a) * color(0.0, 0.0, 0.0) + a * color(0.3, 0.6, 1.0);
 }
@@ -19,7 +42,7 @@ int main() {
     // image
 
     auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 400;
+    int image_width = 900;
 
     // calc image_height and atleast 1
 
@@ -34,7 +57,7 @@ int main() {
     // z-axis = towards me is positive, so viewport center is at (0, 0, -focal_length);
 
     auto focal_length = 1.0; 
-    auto viewport_height = 2.0;
+    auto viewport_height = 8.0;
     auto viewport_width = viewport_height * (double(image_width) / image_height);
     auto camera_center = point3(0, 0, 0);
 
