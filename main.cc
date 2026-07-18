@@ -25,9 +25,8 @@ color ray_color(const ray& r) {
     // so beware if the radius is larger than 1m or tends to 1m
     // the camera would be very close to object and about to be swallowed.
     // so does the size of the viewport also affects the viewing exp.
-    point3 center = point3(0.0, 0.0, 1.0);
+    point3 center = point3(0.0, 0.0, -1.0);
     double radius = 0.7;
-    // double radius = 0.77;
     if (hit_sphere(center, radius, r)) {
             return color(0.5, 0.0, 0.0);
     }
