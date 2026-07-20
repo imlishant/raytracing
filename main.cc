@@ -4,11 +4,11 @@
 #include <iostream>
 
 double hit_sphere(const point3& center, double radius, const ray& r) {
-    vec3 oc = center - r.origin();
-    double a = dot(r.direction(), r.direction());
-    double h = dot(r.direction(), oc);
-    double c = dot(oc, oc) - radius * radius;
-    double D = h*h - a*c;
+    vec3   oc = center - r.origin();
+    double a  = dot(r.direction(), r.direction());
+    double h  = dot(r.direction(), oc);
+    double c  = dot(oc, oc) - radius * radius;
+    double D  = h*h - a*c;
 
     if (D < 0) {
         return -1.0;
@@ -34,7 +34,7 @@ color ray_color(const ray& r) {
 
     point3 center = point3(0.0, 0.0, -1.0);
     double radius = 0.7;
-    auto t = hit_sphere(center, radius, r);
+    auto   t      = hit_sphere(center, radius, r);
 
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
@@ -50,7 +50,7 @@ int main() {
     // image
 
     auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 900;
+    int  image_width  = 900;
 
     // calc image_height and atleast 1
 
@@ -64,10 +64,10 @@ int main() {
     // y-axis = up and inverted here to match with screen coords
     // z-axis = towards me is positive, so viewport center is at (0, 0, -focal_length);
 
-    auto focal_length = 1.0; 
+    auto focal_length    = 1.0; 
     auto viewport_height = 8.0;
-    auto viewport_width = viewport_height * (double(image_width) / image_height);
-    auto camera_center = point3(0, 0, 0);
+    auto viewport_width  = viewport_height * (double(image_width) / image_height);
+    auto camera_center   = point3(0, 0, 0);
 
     // define horizontal & vertical vp vectors edges
     auto viewport_u = vec3(viewport_width, 0, 0);
@@ -79,7 +79,7 @@ int main() {
 
     // define vp top-left corner & pixel P(0, 0, 0);
     auto viewport_upper_left = camera_center - vec3(0, 0, focal_length) - viewport_u / 2 - viewport_v  / 2;
-    auto pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) / 2;
+    auto pixel00_loc         = viewport_upper_left + (pixel_delta_u + pixel_delta_v) / 2;
 
     // render
 
@@ -90,7 +90,7 @@ int main() {
     for (int j = 0; j < image_height; j++) {
         std::clog << "\rScanlines remaining: " << (image_height - j) << " " << std::flush;
         for (int i = 0; i < image_width; i++) {
-            auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
+            auto pixel_center  = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
             auto ray_direction = pixel_center - camera_center;
             // ray_direction = ray_direction.unit_length();
             ray r(camera_center, ray_direction);

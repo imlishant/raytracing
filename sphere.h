@@ -1,5 +1,5 @@
-#ifndef SPHERE.H
-#define SPHERE.H
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include "hittable.h"
 #include "vec3.h"
@@ -13,11 +13,11 @@ class sphere : public hittable {
         
         bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
             vec3 oc = center - r.origin();
-            auto a = dot(r.direction(), r.direction());
-            auto h = dot(r.direction(), oc);
-            auto c = dot(oc, oc) - radius * radius;
+            auto a  = dot(r.direction(), r.direction());
+            auto h  = dot(r.direction(), oc);
+            auto c  = dot(oc, oc) - radius * radius;
 
-            auto D = h*h - a*c;
+            auto D  = h*h - a*c;
             if (D < 0) return false;
 
             auto sqrtd = std::sqrt(D);
@@ -32,7 +32,8 @@ class sphere : public hittable {
 
             rec.t = root;
             rec.p = r.at(rec.t);
-            rec.normal = (rec.p - center) / radius;
+            vec3 outward_normal = (rec.p - center) / radius;
+            rec.set_face_normal(r, outward_normal);
 
             return true;
         }
