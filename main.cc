@@ -9,8 +9,6 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     double h = dot(r.direction(), oc);
     double c = dot(oc, oc) - radius * radius;
     double D = h*h - a*c;
-    // double D = b*b - 4*a*c;
-    // return (D >= 0);
 
     if (D < 0) {
         return -1.0;
@@ -33,9 +31,11 @@ color ray_color(const ray& r) {
     // the camera would be very close to object 
     // and about to be swallowed the whole field of vision.
     // so does the size of the viewport also affects the viewing exp.
+
     point3 center = point3(0.0, 0.0, -1.0);
     double radius = 0.7;
     auto t = hit_sphere(center, radius, r);
+
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
         return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
