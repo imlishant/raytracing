@@ -1,7 +1,7 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include "ray.h"
+#include "rtweekend.h"
 
 class hit_record {
     public: 
@@ -11,6 +11,7 @@ class hit_record {
         bool    front_face;
 
         void set_face_normal(const ray& r, vec3& outward_normal) {
+            // outward_normal is ASSUMED to be unit vector
             front_face = dot(r.direction(), outward_normal) < 0;
             normal = front_face ? outward_normal : -outward_normal;
         }

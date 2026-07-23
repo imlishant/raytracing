@@ -1,7 +1,7 @@
-#include "color.h"
-#include "ray.h"
-#include "vec3.h"
-#include <iostream>
+#include "rtweekend.h"
+#include "hittable.h"
+#include "hittable_list.h"
+#include "sphere.h"
 
 double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3   oc = center - r.origin();
@@ -38,7 +38,7 @@ color ray_color(const ray& r) {
 
     if (t > 0.0) {
         vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
-        return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+        return 0.5 * (N + color(1, 1, 1));
     }
 
     vec3 unit_direction = unit_vector(r.direction());
