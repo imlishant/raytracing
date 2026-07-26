@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-// #include "rtweekend.h"
 #include "hittable.h"
 
 class camera {
@@ -11,7 +10,7 @@ class camera {
         point3  pixel00_loc;
         vec3    pixel_delta_u;
         vec3    pixel_delta_v;
-        // initialise
+
         void initialize() {
 
             image_height = int(image_width / aspect_ratio);
@@ -49,8 +48,8 @@ class camera {
         }
 
     public:
-        double  aspect_ratio  =  16.0  /  9.0;
-        int     image_width   =  900;
+        double  aspect_ratio  =  1.0; // 16.0  /  9.0;
+        int     image_width   =  400;
 
         void render(const hittable& world) {
             initialize();
