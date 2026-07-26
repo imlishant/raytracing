@@ -11,8 +11,8 @@ int main() {
 
     hittable_list world;
 
-    shared_ptr<hittable> sphere1 = make_shared<sphere>(point3(0, 0, -1), 0.6);
-    shared_ptr<hittable> sphere2 = make_shared<sphere>(point3(0, -99.6, -1), 99);
+    shared_ptr<sphere> sphere1 = make_shared<sphere>(point3(0, 0, -1), 0.6);
+    shared_ptr<sphere> sphere2 = make_shared<sphere>(point3(0, -99.6, -1), 99);
     world.add(sphere1);
     world.add(sphere2);
 
