@@ -3,42 +3,10 @@
 #include "hittable_list.h"
 #include "sphere.h"
 
-double hit_sphere(const point3& center, double radius, const ray& r) {
-    vec3   oc = center - r.origin();
-    double a  = dot(r.direction(), r.direction());
-    double h  = dot(r.direction(), oc);
-    double c  = dot(oc, oc) - radius * radius;
-    double D  = h*h - a*c;
-
-    if (D < 0) {
-        return -1.0;
-    } else {
-        return (h - std::sqrt(D)) / a;
-    }
-}
-
-color ray_color(const ray& r) {
-    // -1.0 <= |unit_direction| <= 1.0
-    // -1.0 < unit_direction.y() < 1.0
-    // scaling it to [0, 1]
-    // blending rule
-    // (1 - a)*start + a*end
-
-    // the center is on the viewport,so put it there
-    // thats why the z-axis shift
-    // sphere is just 1m away from the camera
-    // so beware if the radius is larger than 1m or tends to 1m
-    // the camera would be very close to object 
-    // and about to be swallowed the whole field of vision.
-    // so does the size of the viewport also affects the viewing exp.
-
-    point3 center = point3(0.0, 0.0, -1.0);
-    double radius = 0.7;
-    auto   t      = hit_sphere(center, radius, r);
-
-    if (t > 0.0) {
-        vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
-        return 0.5 * (N + color(1, 1, 1));
+color ray_color(const ray& r, const hittable& world) {
+    hit_record rec;
+    if (world.hit(r, 0, infinity, rec)) {
+        return 0.5 * (rec.normal + color(1, 1, 1));
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -57,6 +25,16 @@ int main() {
     int image_height = int(image_width / aspect_ratio);
     image_height = image_height < 1 ? 1 : image_height;
 
+    // world
+    // 2 sphere, 1 visible obj, 2nd ground, very large
+
+    hittable_list world;
+
+    shared_ptr<hittable> sphere1 = make_shared<sphere>(point3(0, 0, -1), 0.6);
+    shared_ptr<hittable> sphere2 = make_shared<sphere>(point3(0, -100.5, -1), 100);
+    world.add(sphere1);
+    world.add(sphere2);
+
     // camera/eye
     // viewport
     // real 3d, 4th quad
@@ -65,7 +43,7 @@ int main() {
     // z-axis = towards me is positive, so viewport center is at (0, 0, -focal_length);
 
     auto focal_length    = 1.0; 
-    auto viewport_height = 8.0;
+    auto viewport_height = 3.0;
     auto viewport_width  = viewport_height * (double(image_width) / image_height);
     auto camera_center   = point3(0, 0, 0);
 
@@ -95,7 +73,7 @@ int main() {
             // ray_direction = ray_direction.unit_length();
             ray r(camera_center, ray_direction);
             
-            color pixel_color = ray_color(r);
+            color pixel_color = ray_color(r, world);
             // auto pixels = color(double(i) / (image_width - 1), double(j) / (image_height - 1), 0.0);
             write_color(std::cout, pixel_color);
         }
