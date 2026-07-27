@@ -2,7 +2,7 @@
 #define RTWEEKEND_H
 
 #include <cmath>
-#include <cstdlib>
+#include <random>
 #include <iostream>
 #include <limits>
 #include <memory>
@@ -20,7 +20,9 @@ inline double degrees_to_radians(double degrees) {
 // [0, 1)
 // [min, max)
 inline double random_double() {
-    return std::rand() / (RAND_MAX + 1.0);
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 gen;
+    return distribution(gen);
 }
 
 inline double random_double(double min, double max) {
