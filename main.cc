@@ -6,13 +6,10 @@
 #include "sphere.h"
 
 int main() {
-    // world
-    // 2 sphere, 1 visible obj, 2nd ground, very large
-
     hittable_list world;
 
-    shared_ptr<sphere> sphere1 = make_shared<sphere>(point3(0, 0, -1), 0.6);
-    shared_ptr<sphere> sphere2 = make_shared<sphere>(point3(0, -99.6, -1), 99);
+    auto sphere1 = make_shared<sphere>(point3(0, 0, -1), 0.6);
+    auto sphere2 = make_shared<sphere>(point3(0, -99.6, -1), 99);
     world.add(sphere1);
     world.add(sphere2);
 
@@ -24,5 +21,4 @@ int main() {
     cam.render(world);
 
     return 0;
-
 }
