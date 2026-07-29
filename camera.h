@@ -46,7 +46,7 @@ class camera {
                                 + ((j + offset.y()) * pixel_delta_v);
             
             auto  ray_origin     =  camera_center;
-            auto  ray_direction  =  pixel_sample    -  ray_origin;
+            auto  ray_direction  =  pixel_sample - ray_origin;
 
             return ray(ray_origin, ray_direction);
         }
