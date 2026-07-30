@@ -43,23 +43,17 @@ class vec3 {
       double length_squared() const {
           return e[0] * e[0] + e[1] * e[1] + e[2] * e[2];
       }
+
+      static vec3 random() {
+          return vec3(random_double(), random_double(), random_double());
+      }
+
+      static vec3 random(double min, double max) {
+          return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+      }
 };
 
-// point3 as alias
-
 using point3 = vec3;
-
-// utility func
-// output <<
-// +
-// -
-// * = u*v
-// * = t*u
-// * = u*t
-// /
-// .
-// x
-// |a|
 
 inline std::ostream& operator<<(std::ostream& out, const vec3& v) {
     return out << v.e[0] << ' ' << v.e[1] << ' ' << v.e[2];
