@@ -97,4 +97,20 @@ inline vec3 unit_vector(const vec3& v) {
     return v / v.length();
 }
 
+inline vec3 random_unit_vector() {
+    while(true) {
+        auto p = vec3::random(-1, 1);
+        if (1e-160 < p.length_squared() && p.length_squared() <= 1)
+            return p / p.length();
+    }
+}
+
+inline vec3 random_on_hemisphere(const vec3& normal_surface) {
+    vec3 on_unit_vector = random_unit_vector();
+    if (dot(on_unit_vector, normal_surface) > 0.0) 
+        return on_unit_vector;
+    else 
+        return -on_unit_vector;
+}
+
 #endif
